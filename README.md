@@ -1,2 +1,2 @@
 # HauzBox
-Web application that enables landlords to manage their property
+Web application that enables property owners to manage their property.
