@@ -1,3 +1,4 @@
 Ds_Store
 virtual/
 .env
+__pycache__/
