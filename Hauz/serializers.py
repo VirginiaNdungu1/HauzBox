@@ -8,8 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
                                    UniqueValidator(queryset=User.objects.all())])
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=User.objects.all())])
-    first_name = serializers.CharField(max_length=30)
-    last_name = serializers.CharField(max_length=30)
+    # first_name = serializers.CharField(max_length=30)
+    # last_name = serializers.CharField(max_length=30)
     password = serializers.CharField(min_length=8)
 
     # create new usser method using create_user method from the User Class
@@ -20,4 +20,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name'. 'last_name', 'email', 'password')
+        fields = ('id', 'email', 'username', 'password')
