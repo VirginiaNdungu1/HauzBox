@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Hauz.apps.HauzConfig',
     'bootstrap3',
     'registration',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
