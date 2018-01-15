@@ -12,8 +12,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     # create new usser method using create_user method from the User Class
     def create(self, validated_data):
-        user = User.objects.create_user(
-            validated_data['username'], validated_data['email'], validated_data['password'])
+        user = User(email=validated_data['email'],
+                    username=validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
         return user
 
     class Meta:
