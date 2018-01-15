@@ -1,8 +1,10 @@
 from django.urls import reverse
-from rest_framework import status
+from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
+from rest_framework.authtoken.models import Token
+from rest_framework import status
 # Create your tests here.
 # client = APIClient()
 
@@ -28,6 +30,9 @@ class AccountsTest(APITestCase):
         }
 
         response = self.client.post(self.create_url, data, format='json')
+        user = User.objects.latest('id')
+        token = Token.objects.get(user=user)
+
         # make sure the db has two users
         self.assertEqual(User.objects.count(), 2)
         # make sure we return a 201 created code
@@ -35,6 +40,7 @@ class AccountsTest(APITestCase):
         # return the user attributes upon successful creation
         self.assertEqual(response.data['username'], data['username'])
         self.assertEqual(response.data['email'], data['email'])
+        self.assertEqual(response.data['token'], token.key)
         self.assertFalse('password' in response.data)
 
     def test_create_user_with_short_password(self):
