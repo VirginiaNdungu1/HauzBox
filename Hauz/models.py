@@ -38,7 +38,7 @@ class Amenity(models.Model):
 
 class Tenant(models.Model):
     name = models.CharField(max_length=50)
-    original_id = models = models.PositiveIntegerField()
+    original_id = models.PositiveIntegerField()
     account_no = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     phone_number = PhoneNumberField(blank=True)
