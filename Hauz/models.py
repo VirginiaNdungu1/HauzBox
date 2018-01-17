@@ -90,6 +90,8 @@ class Maintenance(models.Model):
 
 
 class Expense(models.Model):
+    property_id = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_expense', null=True)
     gabbage = models.DecimalField(max_digits=10, decimal_places=2)
     security = models.DecimalField(max_digits=10, decimal_places=2)
     cleaning = models.DecimalField(max_digits=10, decimal_places=2)
