@@ -5,11 +5,11 @@ from . models import Property_Type, Property, House, Maintenance, Amenity, Tenan
 
 
 class HouseAdmin(admin.ModelAdmin):
-    filter_horizontal = ('amenity_id')
+    filter_horizontal = ('amenity_id',)
 
 
 class ExpenseAdmin(admin.ModelAdmin):
-    filter_horizontal = ('maintenance')
+    filter_horizontal = ('maintenance_id',)
 
 
 # Register your models here.
@@ -18,6 +18,6 @@ admin.site.register(Property)
 admin.site.register(House, HouseAdmin)
 admin.site.register(Amenity)
 admin.site.register(Tenant)
-admin.site.register(Maintenance, ExpenseAdmin)
-admin.site.register(Expense)
+admin.site.register(Maintenance)
+admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Payment)
