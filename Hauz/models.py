@@ -56,6 +56,7 @@ class House(models.Model):
     bathrooms = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=14, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+    occupancy = models.BooleanField(default=False)
     property_id = models.ForeignKey(
         Property_Type, on_delete=models.CASCADE, related_name='house_id')
     amenity_id = models.ManyToManyField(Amenity)
