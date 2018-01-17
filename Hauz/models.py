@@ -92,7 +92,7 @@ class Expense(models.Model):
     gabbage = models.DecimalField(max_digits=10, decimal_places=2)
     security = models.DecimalField(max_digits=10, decimal_places=2)
     cleaning = models.DecimalField(max_digits=10, decimal_places=2)
-    maintenance = models.ManyToManyField(Maintenance)
+    maintenance_id = models.ManyToManyField(Maintenance)
     property_tax = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
