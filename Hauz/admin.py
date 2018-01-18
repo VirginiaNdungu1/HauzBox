@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from . models import Property_Type, Property, House, Maintenance, Amenity, Tenant, Payment, Expense
+from . models import Property_Type, Property, House, Maintenance, Amenity, Tenant, Payment, Expense, Property_Group
 # Create a custom ModelAdmin class
 
 
@@ -12,6 +12,7 @@ class ExpenseAdmin(admin.ModelAdmin):
     filter_horizontal = ('maintenance_id',)
 
 
+
 # Register your models here.
 admin.site.register(Property_Type)
 admin.site.register(Property)
@@ -21,3 +22,4 @@ admin.site.register(Tenant)
 admin.site.register(Maintenance)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Payment)
+admin.site.register(Property_Group)
