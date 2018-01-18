@@ -26,6 +26,8 @@ class Property(models.Model):
     house_count = models.PositiveIntegerField(default=0)
     property_type = models.ForeignKey(
         Property_Type, on_delete=models.CASCADE, related_name='property')
+    property_group = models.ForeignKey(
+        Property_Group, on_delete=models.CASCADE, related_name='group_property', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_property')
