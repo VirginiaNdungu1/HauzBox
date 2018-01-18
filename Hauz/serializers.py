@@ -27,4 +27,4 @@ class UserSerializer(serializers.ModelSerializer):
 class ProprtyGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Group
-        fields = ('id', 'name', 'created_at', 'user')
+        fields = ('name', 'created_at', 'user')
