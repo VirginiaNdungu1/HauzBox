@@ -8,11 +8,17 @@ class Property_Type(models.Model):
     name = models.CharField(max_length=32)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'property_type'
+
     def __str__(self):
         return self.name
 
 
 class Property_Group(models.Model):
+    class Meta:
+        db_table = 'property_group'
+
     name = models.CharField(max_length=32)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
@@ -23,6 +29,9 @@ class Property_Group(models.Model):
 
 
 class Property(models.Model):
+    class Meta:
+        db_table = 'property'
+
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=250, blank=True)
     house_count = models.PositiveIntegerField(default=0)
@@ -39,6 +48,9 @@ class Property(models.Model):
 
 
 class Amenity(models.Model):
+    class Meta:
+        db_table = 'amenity'
+
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
@@ -49,6 +61,9 @@ class Amenity(models.Model):
 
 
 class Tenant(models.Model):
+    class Meta:
+        db_table = 'tenant'
+
     name = models.CharField(max_length=50)
     original_id = models.PositiveIntegerField()
     account_no = models.CharField(max_length=30)
@@ -62,6 +77,9 @@ class Tenant(models.Model):
 
 
 class House(models.Model):
+    class Meta:
+        db_table = 'houses'
+
     house_no = models.CharField(max_length=30)
     description = models.TextField(max_length=250)
     bedrooms = models.PositiveIntegerField(default=0)
@@ -80,6 +98,9 @@ class House(models.Model):
 
 
 class Payment(models.Model):
+    class Meta:
+        db_table = 'payment'
+
     house = models.ForeignKey(
         House, on_delete=models.CASCADE, related_name='house_payment')
     tenant = models.ForeignKey(
@@ -94,6 +115,9 @@ class Payment(models.Model):
 
 
 class Maintenance(models.Model):
+    class Meta:
+        db_table = 'maintenance'
+
     name = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -102,6 +126,9 @@ class Maintenance(models.Model):
 
 
 class Expense(models.Model):
+    class Meta:
+        db_table = 'expense'
+
     property_id = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name='property_expense', null=True)
     gabbage = models.DecimalField(max_digits=10, decimal_places=2)
