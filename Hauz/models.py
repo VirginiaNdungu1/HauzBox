@@ -15,6 +15,8 @@ class Property_Type(models.Model):
 class Property_Group(models.Model):
     name = models.CharField(max_length=32)
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_property_group', null=True)
 
     def __str__(self):
         return self.name
