@@ -12,6 +12,14 @@ class Property_Type(models.Model):
         return self.name
 
 
+class Property_Group(models.Model):
+    name = models.CharField(max_length=32)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Property(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=250, blank=True)
