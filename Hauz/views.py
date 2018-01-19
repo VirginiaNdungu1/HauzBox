@@ -9,11 +9,12 @@ from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
 from . models import Property_Group, Property, Property_Type
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 # Create your views here.
 
 
 class CreateUser(APIView):
+    permission_classes = (AllowAny,)
     '''
     creates user
     '''
