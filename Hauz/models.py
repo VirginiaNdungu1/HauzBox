@@ -36,12 +36,15 @@ class Property(models.Model):
     description = models.TextField(max_length=250, blank=True)
     house_count = models.PositiveIntegerField(default=0)
     property_type = models.ForeignKey(
-        Property_Type, on_delete=models.CASCADE, related_name='property')
+        Property_Type, on_delete=models.CASCADE)
     property_group = models.ForeignKey(
         Property_Group, on_delete=models.CASCADE, related_name='group_property', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_property')
+
+    # def __unicode__(self):
+    #     return '%d: %s' % (self.id, self.name)
 
     def __str__(self):
         return self.name
@@ -106,7 +109,8 @@ class Payment(models.Model):
     tenant = models.ForeignKey(
         Tenant, on_delete=models.CASCADE, related_name='tenant_payment')
     transaction_id = models.CharField(max_length=50)
-    paid_at = models.TimeField(auto_now=False, auto_now_add=False, null=True)
+    paid_at = models.TimeField(
+        auto_now=False, auto_now_add=False, null=True)
     amount = models.DecimalField(max_digits=14, decimal_places=2)
     is_paid = models. BooleanField(default=False)
 
