@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property
+from . models import Property_Group, Property, Property_Type, House
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,14 +24,33 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
-class ProprtyGroupSerializer(serializers.ModelSerializer):
+class HouseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Property_Group
-        fields = ('name', 'created_at', 'user')
+        model = House
+        fields = ('house_no', 'description', 'bedrooms',
+                  'bathrooms', 'price', 'occupancy')
 
 
 class PropertiesSerializer(serializers.ModelSerializer):
+    # house_set = HouseSerializer(many=True)
+
     class Meta:
         model = Property
         fields = ('name', 'description', 'house_count',
-                  'property_type', 'user')
+                  'user', )
+
+
+class PropertyTypeSerializer(serializers.ModelSerializer):
+    property_set = PropertiesSerializer(many=True)
+
+    class Meta:
+        model = Property_Type
+        fields = ('id', 'name', 'created_at', 'property_set')
+
+
+class ProprtyGroupSerializer(serializers.ModelSerializer):
+    group_property = PropertiesSerializer(many=True)
+
+    class Meta:
+        model = Property_Group
+        fields = ('name', 'created_at', 'user', 'group_property')
