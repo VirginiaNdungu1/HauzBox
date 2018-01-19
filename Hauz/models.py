@@ -92,9 +92,11 @@ class House(models.Model):
     occupancy = models.BooleanField(default=False)
     property_id = models.ForeignKey(
         Property_Type, on_delete=models.CASCADE, related_name='house_id')
+    house_property = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_houses', null=True)
     amenity_id = models.ManyToManyField(Amenity)
     tenant_id = models.ForeignKey(
-        Tenant, on_delete=models.CASCADE, related_name='house_tenant')
+        Tenant, on_delete=models.CASCADE, related_name='house_tenant', blank=True, null=True)
 
     def __str__(self):
         return self.house_no
