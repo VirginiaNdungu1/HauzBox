@@ -2,13 +2,13 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupSerializer
+from . serializers import UserSerializer, ProprtyGroupSerializer, PropertiesSerializer, PropertyTypeSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
-from . models import Property_Group
+from . models import Property_Group, Property, Property_Type
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
@@ -39,10 +39,26 @@ class PropertyGroupList(APIView):
         except Property_Group.DoesNotExist:
             return Http404
 
-    def get(self, request, user_id, format='json'):
+    def get(self, request, format='json'):
         user = request.user
         user_id = user.id
         property_groups = self.get_property_by_user(user_id)
-        serializers = ProprtyGroupSerializer(property_groups, many=True)
+        # property_types = self.get_property_type()
+        serializers = ProprtyGroupSerializer(
+            property_groups, many=True)
+
         json = serializers.data
+        return Response(json)
+
+
+class PropertyTypeList(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_property_types(self):
+        return Property_Type.objects.all()
+
+    def get(self, request, format='json'):
+        property_types = self.get_property_types()
+        serializer = PropertyTypeSerializer(property_types, many=True)
+        json = serializer.data
         return Response(json)
