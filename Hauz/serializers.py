@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House
+from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,20 +24,39 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
+class TenantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
+
+
+class AmenitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Amenity
+        fields = ('id', 'name')
+
+
 class HouseSerializer(serializers.ModelSerializer):
+    amenity_id = AmenitySerializer(many=True)
+    # amenity_id = serializers.SlugRelatedField(many=True, read_only=True,
+    #                                           slug_field='name')
+    tenant_id = TenantSerializer()
+    # tenant_id = serializers.SlugRelatedField(
+    #     read_only=True, slug_field='name')
+
     class Meta:
         model = House
         fields = ('house_no', 'description', 'bedrooms',
-                  'bathrooms', 'price', 'occupancy')
+                  'bathrooms', 'price', 'occupancy', 'amenity_id', 'tenant_id')
 
 
 class PropertiesSerializer(serializers.ModelSerializer):
-    # house_set = HouseSerializer(many=True)
+    property_houses = HouseSerializer(many=True)
 
     class Meta:
         model = Property
         fields = ('name', 'description', 'house_count',
-                  'user', )
+                  'user', 'property_houses')
 
 
 class PropertyTypeSerializer(serializers.ModelSerializer):
@@ -45,7 +64,7 @@ class PropertyTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Property_Type
-        fields = ('id', 'name', 'created_at', 'property_set')
+        fields = ('id', 'name', 'created_at', 'property_set',  'house_id')
 
 
 class ProprtyGroupSerializer(serializers.ModelSerializer):
