@@ -24,6 +24,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
+class PropertyTypeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property_Type
+        fields = ('id', 'name')
+
+
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tenant
@@ -36,38 +42,49 @@ class AmenitySerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class PropertyGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property_Group
+        fields = ('name')
+
+
 class HouseSerializer(serializers.ModelSerializer):
-    amenity_id = AmenitySerializer(many=True)
+    # amenity_id = AmenitySerializer(many=True)
     # amenity_id = serializers.SlugRelatedField(many=True, read_only=True,
     #                                           slug_field='name')
-    tenant_id = TenantSerializer()
+    tenants = TenantSerializer()
+    property_types = PropertyTypeListSerializer()
     # tenant_id = serializers.SlugRelatedField(
     #     read_only=True, slug_field='name')
 
     class Meta:
         model = House
-        fields = ('house_no', 'description', 'bedrooms',
-                  'bathrooms', 'price', 'occupancy', 'amenity_id', 'tenant_id')
+        fields = ('property_types', 'house_no', 'description', 'bedrooms',
+                  'bathrooms', 'price', 'occupancy', 'tenants')
 
 
 class PropertiesSerializer(serializers.ModelSerializer):
     property_houses = HouseSerializer(many=True)
+    amenities = AmenitySerializer(many=True)
+    property_type = PropertyTypeListSerializer()
 
     class Meta:
         model = Property
         fields = ('name', 'description', 'house_count',
-                  'user', 'property_houses')
+                  'user', 'property_type', 'amenities', 'property_houses', )
 
 
 class PropertyTypeSerializer(serializers.ModelSerializer):
-    property_set = PropertiesSerializer(many=True)
+    # house_id = PropertiesSerializer(many=True)
+    # property_types  = Prop
+    # house_id = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
     class Meta:
         model = Property_Type
-        fields = ('id', 'name', 'created_at', 'property_set',  'house_id')
+        fields = ('id', 'name', 'created_at',)
 
 
-class ProprtyGroupSerializer(serializers.ModelSerializer):
+class ProprtyGroupsSerializer(serializers.ModelSerializer):
     group_property = PropertiesSerializer(many=True)
 
     class Meta:
