@@ -4,19 +4,19 @@ from . models import Property_Type, Property, House, Maintenance, Amenity, Tenan
 # Create a custom ModelAdmin class
 
 
-class HouseAdmin(admin.ModelAdmin):
-    filter_horizontal = ('amenity_id',)
+class PropertyAdmin(admin.ModelAdmin):
+    filter_horizontal = ('amenities',)
 
 
 class ExpenseAdmin(admin.ModelAdmin):
-    filter_horizontal = ('maintenance_id',)
+    filter_horizontal = ('maintenances',)
 
 
 
 # Register your models here.
 admin.site.register(Property_Type)
-admin.site.register(Property)
-admin.site.register(House, HouseAdmin)
+admin.site.register(Property, PropertyAdmin)
+admin.site.register(House)
 admin.site.register(Amenity)
 admin.site.register(Tenant)
 admin.site.register(Maintenance)
