@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from . models import Property_Type, Property, House, Maintenance, Amenity, Payment, Expense, Property_Group
+from . models import Property_Type, Property, House, Tenant, Maintenance, Amenity, Payment, Expense, Property_Group
 # Create a custom ModelAdmin class
 
 
@@ -18,7 +18,7 @@ admin.site.register(Property_Type)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(House)
 admin.site.register(Amenity)
-# admin.site.register(Tenant)
+admin.site.register(Tenant)
 admin.site.register(Maintenance)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Payment)
