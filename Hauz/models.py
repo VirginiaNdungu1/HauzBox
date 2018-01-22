@@ -2,6 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
+Month_Choices = (
+    ('Jan', 'january'),
+    ('Feb', 'february'),
+    ('Mar', 'march'),
+    ('Apr', 'april'),
+    ('May', 'may'),
+    ('Jun', 'june'),
+    ('July', 'july'),
+    ('Aug', 'august'),
+    ('Sep', 'september'),
+    ('Oct', 'october'),
+    ('Nov', 'november'),
+    ('Dec', 'december'),
+)
 
 
 class Property_Type(models.Model):
@@ -136,6 +150,8 @@ class Expense(models.Model):
     gabbage = models.DecimalField(max_digits=10, decimal_places=2)
     security = models.DecimalField(max_digits=10, decimal_places=2)
     cleaning = models.DecimalField(max_digits=10, decimal_places=2)
+    month = models.CharField(
+        max_length=30, choices=Month_Choices, default='jan', blank=True)
     maintenances = models.ManyToManyField(Maintenance)
     property_tax = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
