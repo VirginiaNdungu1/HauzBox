@@ -61,22 +61,6 @@ class Property(models.Model):
         return self.name
 
 
-# class Tenant(models.Model):
-#     class Meta:
-#         db_table = 'tenant'
-#
-#     name = models.CharField(max_length=50)
-#     original_id = models.PositiveIntegerField()
-#     account_no = models.CharField(max_length=30)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     phone_number = PhoneNumberField(blank=True)
-#     user = models.ForeignKey(
-#         User, on_delete=models.CASCADE, related_name='property_tenant')
-#
-#     def __str__(self):
-#         return self.name
-
-
 class House(models.Model):
     class Meta:
         db_table = 'houses'
@@ -88,11 +72,6 @@ class House(models.Model):
     price = models.DecimalField(max_digits=14, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     occupancy = models.BooleanField(default=False)
-    tenant = models.CharField(max_length=50, blank=True, null=True)
-    original_id = models.IntegerField(blank=True, null=True)
-    account_no = models.CharField(max_length=30, blank=True, null=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    phone_number = PhoneNumberField(blank=True, null=True)
     property_types = models.ForeignKey(
         Property_Type, on_delete=models.CASCADE, related_name='house_id')
     house_property = models.ForeignKey(
@@ -104,14 +83,29 @@ class House(models.Model):
         return self.house_no
 
 
+class Tenant(models.Model):
+    class Meta:
+        db_table = 'tenant'
+
+    house_id = models.ForeignKey(
+        House, on_delete=models.CASCADE, null=True, related_name='house_tenant')
+    name = models.CharField(max_length=50)
+    original_id = models.PositiveIntegerField()
+    account_no = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    phone_number = PhoneNumberField(blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='property_tenant')
+
+    def __str__(self):
+        return self.name
+
+
 class Payment(models.Model):
     class Meta:
         db_table = 'payment'
-
     house = models.ForeignKey(
         House, on_delete=models.CASCADE, related_name='house_payment')
-    # tenant = models.ForeignKey(
-    #     Tenant, on_delete=models.CASCADE, related_name='tenant_payment')
     transaction_id = models.CharField(max_length=50)
     paid_at = models.TimeField(
         auto_now=False, auto_now_add=False, null=True)
