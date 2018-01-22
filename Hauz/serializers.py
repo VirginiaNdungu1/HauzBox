@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant
+from . models import Property_Group, Property, Property_Type, House, Amenity
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,11 +29,11 @@ class PropertyTypeListSerializer(serializers.ModelSerializer):
         model = Property_Type
         fields = ('id', 'name')
 
-
-class TenantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tenant
-        fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
+#
+# class TenantSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Tenant
+#         fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class HouseSerializer(serializers.ModelSerializer):
     # amenity_id = AmenitySerializer(many=True)
     # amenity_id = serializers.SlugRelatedField(many=True, read_only=True,
     #                                           slug_field='name')
-    tenants = TenantSerializer()
+    # tenants = TenantSerializer()
     property_types = PropertyTypeListSerializer()
     # tenant_id = serializers.SlugRelatedField(
     #     read_only=True, slug_field='name')
@@ -60,7 +60,7 @@ class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
         fields = ('property_types', 'house_no', 'description', 'bedrooms',
-                  'bathrooms', 'price', 'occupancy', 'tenants')
+                  'bathrooms', 'price', 'occupancy', 'tenant', 'original_id', 'account_no', 'phone_number')
 
 
 class PropertiesSerializer(serializers.ModelSerializer):
