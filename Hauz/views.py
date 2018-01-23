@@ -52,16 +52,14 @@ class PropertyGroupList(APIView):
 
         json = serializers.data
         return Response(json)
-    #
-    # def post(self, request, format='json'):
-    #     serializer = PropertyGroupSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #
-    #         property_group = serializer.save()
-    #         json = serializer.data
-    #         return Response(json, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #
+
+    def post(self, request, format='json'):
+        serializer = PropertyGroupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+            json = serializer.data
+            return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PropertyTypeList(APIView):
