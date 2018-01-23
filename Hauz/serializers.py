@@ -69,7 +69,7 @@ class PropertySerializer(serializers.ModelSerializer):
 class PropertyGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Group
-        fields = ('name')
+        fields = ('id', 'name', 'user')
 
 
 class HouseSerializer(serializers.ModelSerializer):
