@@ -9,6 +9,7 @@ urlpatterns = [
         views.PropertyGroupList.as_view()),
     url(r'^api/property_types/$', views.PropertyTypeList.as_view()),
     url(r'^api/properties/$', views.PropertyExpenseList.as_view()),
+    url(r'^api/properties/new/$', views.PropertyList.as_view()),
     # url(r'^api/property_group/properties/(?P<property_group_id>[0-9]+)/$',
     #     views.PropertiesList.as_view()),
 ]
