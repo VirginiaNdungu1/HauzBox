@@ -57,6 +57,27 @@ class AmenitySerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class NewPropertySerializer(serializers.ModelSerializer):
+    # amenities = AmenitySerializer(many=True)
+    amenities = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Amenity.objects.all())
+    # property_type = serializers.CharField(source=property_type.id)
+
+    class Meta:
+        model = Property
+        fields = ('id', 'name', 'description', 'house_count',
+                  'property_type', 'property_group', 'user', 'amenities')
+
+    # def create(self, validated_data):
+    #     amenity_data = validated_data.pop('amenities')
+    #     single_property = Property.objects.create(**validated_data)
+    #     for amenity in amenity_data:
+    #         d = dict(amenity)
+    #         Property.objects.create(
+    #             single_property=single_property, amenity=d['amenity'])
+    #     return single_property
+
+
 class PropertySerializer(serializers.ModelSerializer):
     property_expense = MonthlyExpenseSerializer(many=True)
 
