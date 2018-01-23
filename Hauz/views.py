@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer
+from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
@@ -74,4 +74,28 @@ class PropertyTypeList(APIView):
         property_types = self.get_property_types()
         serializer = PropertyTypeSerializer(property_types, many=True)
         json = serializer.data
+        return Response(json)
+
+
+class PropertyExpenseList(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get_user_properties(self, user_id):
+        try:
+            return Property.objects.filter(user_id=user_id).all()
+        except Property.DoesNotExist:
+            return Http404
+    #
+    # def get_monthly_expenses(self, month):
+    #     month = datetime.datetime.now().month
+    #     monthly_expense = Expense.objects.filter(month=month).all()
+    #     return monthly_expense
+
+    def get(self, request, format='json'):
+        user = request.user
+        user_id = user.id
+        properties = self.get_user_properties(user_id)
+        # property_types = self.get_property_type()
+        serializers = PropertySerializer(properties, many=True)
+        json = serializers.data
         return Response(json)
