@@ -94,7 +94,14 @@ class House(models.Model):
     bathrooms = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=14, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    occupancy = models.BooleanField(default=False)
+    # occupancy = models.BooleanField(default=False)
+    name = models.CharField(max_length=50, null=True)
+    original_id = models.PositiveIntegerField(null=True)
+    account_no = models.CharField(max_length=30, null=True)
+    modified_at = models.DateTimeField(auto_now_add=True, null=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='property_tenant', null=True)
     property_types = models.ForeignKey(
         Property_Type, on_delete=models.CASCADE, related_name='house_id')
     house_property = models.ForeignKey(
@@ -106,22 +113,22 @@ class House(models.Model):
         return self.house_no
 
 
-class Tenant(models.Model):
-    class Meta:
-        db_table = 'tenant'
-
-    house_id = models.ForeignKey(
-        House, on_delete=models.CASCADE, null=True, related_name='house_tenant')
-    name = models.CharField(max_length=50)
-    original_id = models.PositiveIntegerField()
-    account_no = models.CharField(max_length=30)
-    created_at = models.DateTimeField(auto_now_add=True)
-    phone_number = PhoneNumberField(blank=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='property_tenant')
-
-    def __str__(self):
-        return self.name
+# class Tenant(models.Model):
+#     class Meta:
+#         db_table = 'tenant'
+#
+#     house_id = models.ForeignKey(
+#         House, on_delete=models.CASCADE, null=True, related_name='house_tenant')
+#     name = models.CharField(max_length=50)
+#     original_id = models.PositiveIntegerField()
+#     account_no = models.CharField(max_length=30)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     phone_number = PhoneNumberField(blank=True)
+#     user = models.ForeignKey(
+#         User, on_delete=models.CASCADE, related_name='property_tenant')
+#
+#     def __str__(self):
+#         return self.name
 
 
 class Payment(models.Model):
@@ -141,15 +148,15 @@ class Payment(models.Model):
         return str(self.house)
 
 
-class Maintenance(models.Model):
-    class Meta:
-        db_table = 'maintenance'
-
-    name = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return self.name
+# class Maintenance(models.Model):
+#     class Meta:
+#         db_table = 'maintenance'
+#
+#     name = models.CharField(max_length=50)
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#
+#     def __str__(self):
+#         return self.name
 
 
 # class Expense(models.Model):
