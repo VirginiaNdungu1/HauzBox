@@ -44,7 +44,7 @@ class PropertyTypeListSerializer(serializers.ModelSerializer):
         model = Property_Type
         fields = ('id', 'name')
 
-
+#
 # class TenantSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Tenant
@@ -135,3 +135,25 @@ class ProprtyGroupsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Group
         fields = ('name', 'created_at', 'user', 'group_property')
+
+# serializer for payments
+
+
+class NewPaymentSerializer(serializers.ModelSerializer):
+    # amenities = AmenitySerializer(many=True)
+    # property_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Property.objects.all())
+    # property_type = serializers.CharField(source=property_type.id)
+
+    class Meta:
+        model = Payment
+        fields = ('tenant_name', 'month', 'transaction_id',
+                  'amount', 'property_id')
+
+    # def create(self, validated_data):
+    #     amenity_data = validated_data.pop('amenities')
+    #     single_property = Property.objects.create(**validated_data)
+    #     for amenity in amenity_data:
+    #         d = dict(amenity)
+    #         Property.objects.create(
+    #             single_property=single_property, amenity=d['amenity'])
+    #     return single_property
