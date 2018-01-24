@@ -66,7 +66,16 @@ class Property(models.Model):
         Property_Type, on_delete=models.CASCADE, related_name='all_property_types')
     property_group = models.ForeignKey(
         Property_Group, on_delete=models.CASCADE, related_name='group_property', null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
+    gabbage = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    security = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    cleaning = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    # month = models.CharField(
+    #     max_length=30, choices=Month_Choices, default='jan', blank=True)
+    # maintenances = models.ManyToManyField(Maintenance)
+    property_tax = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_property')
     amenities = models.ManyToManyField(Amenity)
@@ -143,20 +152,20 @@ class Maintenance(models.Model):
         return self.name
 
 
-class Expense(models.Model):
-    class Meta:
-        db_table = 'expense'
-
-    property_id = models.ForeignKey(
-        Property, on_delete=models.CASCADE, related_name='property_expense', null=True)
-    gabbage = models.DecimalField(max_digits=10, decimal_places=2)
-    security = models.DecimalField(max_digits=10, decimal_places=2)
-    cleaning = models.DecimalField(max_digits=10, decimal_places=2)
-    month = models.CharField(
-        max_length=30, choices=Month_Choices, default='jan', blank=True)
-    maintenances = models.ManyToManyField(Maintenance)
-    property_tax = models.DecimalField(max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-
-    def __str__(self):
-        return self.month
+# class Expense(models.Model):
+#     class Meta:
+#         db_table = 'expense'
+#
+#     property_id = models.ForeignKey(
+#         Property, on_delete=models.CASCADE, related_name='property_expense', null=True)
+#     gabbage = models.DecimalField(max_digits=10, decimal_places=2)
+#     security = models.DecimalField(max_digits=10, decimal_places=2)
+#     cleaning = models.DecimalField(max_digits=10, decimal_places=2)
+#     month = models.CharField(
+#         max_length=30, choices=Month_Choices, default='jan', blank=True)
+#     maintenances = models.ManyToManyField(Maintenance)
+#     property_tax = models.DecimalField(max_digits=10, decimal_places=2)
+#     created_at = models.DateTimeField(auto_now_add=True, null=True)
+#
+#     def __str__(self):
+#         return self.month
