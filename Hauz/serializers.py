@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant, Expense, Maintenance
+from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant, Maintenance
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,13 +30,13 @@ class MaintenanceSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'amount')
 
 
-class MonthlyExpenseSerializer(serializers.ModelSerializer):
-    maintenances = MaintenanceSerializer(many=True)
-
-    class Meta:
-        model = Expense
-        fields = ('id', 'month', 'gabbage', 'security',
-                  'cleaning', 'property_tax', 'maintenances')
+# class MonthlyExpenseSerializer(serializers.ModelSerializer):
+#     maintenances = MaintenanceSerializer(many=True)
+#
+#     class Meta:
+#         model = Expense
+#         fields = ('id', 'month', 'gabbage', 'security',
+#                   'cleaning', 'property_tax', 'maintenances')
 
 
 class PropertyTypeListSerializer(serializers.ModelSerializer):
@@ -79,12 +79,12 @@ class NewPropertySerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    property_expense = MonthlyExpenseSerializer(many=True)
+    # property_expense = MonthlyExpenseSerializer(many=True)
 
     class Meta:
         model = Property
         fields = ('name', 'description', 'house_count',
-                  'user', 'property_type', 'property_expense')
+                  'user', 'property_type')
 
 
 class PropertyGroupSerializer(serializers.ModelSerializer):
