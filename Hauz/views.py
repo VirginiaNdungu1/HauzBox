@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer
+from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer,NewPaymentSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
@@ -11,6 +11,9 @@ from django.http import HttpResponse, Http404
 from . models import Property_Group, Property, Property_Type
 from rest_framework.permissions import IsAuthenticated, AllowAny
 # Create your views here.
+from django.views.generic.edit import CreateView
+from .forms import PaymentForm
+from django.views.decorators.csrf import csrf_exempt
 
 
 class CreateUser(APIView):
@@ -109,3 +112,18 @@ class PropertyList(APIView):
             json = serializer.data
             return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# payment post api
+class Payments(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format='json'):
+        serializer = NewPaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            json = serializer.data
+            return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PaymentView(CreateView):
+    form_class = PaymentForm
