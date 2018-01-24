@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant, Expense, Maintenance,Payment
+from . models import Property_Group, Property, Property_Type, House, Amenity, Expense, Maintenance, Payment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -44,11 +44,11 @@ class PropertyTypeListSerializer(serializers.ModelSerializer):
         model = Property_Type
         fields = ('id', 'name')
 
-
-class TenantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tenant
-        fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
+#
+# class TenantSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Tenant
+#         fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -137,6 +137,8 @@ class ProprtyGroupsSerializer(serializers.ModelSerializer):
         fields = ('name', 'created_at', 'user', 'group_property')
 
 # serializer for payments
+
+
 class NewPaymentSerializer(serializers.ModelSerializer):
     # amenities = AmenitySerializer(many=True)
     # property_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Property.objects.all())
@@ -144,7 +146,8 @@ class NewPaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ('tenant_name', 'month', 'transaction_id', 'amount', 'property_id')
+        fields = ('tenant_name', 'month', 'transaction_id',
+                  'amount', 'property_id')
 
     # def create(self, validated_data):
     #     amenity_data = validated_data.pop('amenities')
@@ -154,4 +157,3 @@ class NewPaymentSerializer(serializers.ModelSerializer):
     #         Property.objects.create(
     #             single_property=single_property, amenity=d['amenity'])
     #     return single_property
-
