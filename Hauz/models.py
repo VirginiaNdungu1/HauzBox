@@ -94,7 +94,7 @@ class House(models.Model):
     bathrooms = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=14, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    # occupancy = models.BooleanField(default=False)
+    occupancy = models.BooleanField(default=False)
     name = models.CharField(max_length=50, null=True)
     original_id = models.PositiveIntegerField(null=True)
     account_no = models.CharField(max_length=30, null=True)
@@ -134,16 +134,19 @@ class House(models.Model):
 class Payment(models.Model):
     class Meta:
         db_table = 'payment'
-    property_id = models.ForeignKey(Property,on_delete=models.CASCADE, related_name='property_payment')
-    tenant_name = models.CharField(max_length=100)
-    month = models.CharField(max_length=100)
-    
+    property_id = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_payment', null=True)
+    tenant_name = models.CharField(max_length=100, null=True)
+    month = models.CharField(max_length=100, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='house_payment', null=True)
+
     # house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='house_payment')
-    transaction_id = models.CharField(max_length=50)
+    transaction_id = models.CharField(max_length=50, null=True)
     # month = models.CharField(max_length=30, choices=Month_Choices, default='jan', blank=True)
     # paid_at = models.TimeField(
     #     auto_now=False, auto_now_add=False, null=True)
-    amount = models.DecimalField(max_digits=14, decimal_places=2)
+    amount = models.DecimalField(max_digits=14, decimal_places=2, null=True)
     # is_paid = models. BooleanField(default=False)
 
     def __str__(self):
