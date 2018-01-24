@@ -152,7 +152,7 @@ class NewPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = ('property_id', 'tenant_name', 'month', 'transaction_id',
-                  'amount')
+                  'amount', 'user')
 
     # def create(self, validated_data):
     #     amenity_data = validated_data.pop('amenities')
