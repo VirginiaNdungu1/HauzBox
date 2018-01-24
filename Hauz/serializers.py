@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House, Amenity, Tenant, Maintenance
+from . models import Property_Group, Property, Property_Type, House, Amenity
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,10 +24,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
-class MaintenanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Maintenance
-        fields = ('id', 'name', 'amount')
+# class MaintenanceSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Maintenance
+#         fields = ('id', 'name', 'amount')
 
 
 # class MonthlyExpenseSerializer(serializers.ModelSerializer):
@@ -45,10 +45,10 @@ class PropertyTypeListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class TenantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tenant
-        fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
+# class TenantSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Tenant
+#         fields = ('id', 'name', 'original_id', 'account_no', 'phone_number')
 
 
 class AmenitySerializer(serializers.ModelSerializer):
