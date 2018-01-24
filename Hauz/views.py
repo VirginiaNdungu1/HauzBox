@@ -2,17 +2,17 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer,NewPaymentSerializer
+from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
-from . models import Property_Group, Property, Property_Type
+from . models import Property_Group, Property, Property_Type, Payment
 from rest_framework.permissions import IsAuthenticated, AllowAny
 # Create your views here.
 from django.views.generic.edit import CreateView
-from .forms import PaymentForm
+# from .forms import PaymentForm
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -77,8 +77,10 @@ class PropertyTypeList(APIView):
         json = serializer.data
         return Response(json)
 
+# properties per user
 
-class PropertyExpenseList(APIView):
+
+class PropertiesList(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get_user_properties(self, user_id):
@@ -86,36 +88,44 @@ class PropertyExpenseList(APIView):
             return Property.objects.filter(user_id=user_id).all()
         except Property.DoesNotExist:
             return Http404
-    #
-    # def get_monthly_expenses(self, month):
-    #     month = datetime.datetime.now().month
-    #     monthly_expense = Expense.objects.filter(month=month).all()
-    #     return monthly_expense
 
     def get(self, request, format='json'):
         user = request.user
         user_id = user.id
         properties = self.get_user_properties(user_id)
-        # property_types = self.get_property_type()
         serializers = PropertySerializer(properties, many=True)
         json = serializers.data
         return Response(json)
 
-
-class PropertyList(APIView):
-    permission_classes = (IsAuthenticated,)
-
     def post(self, request, format='json'):
-        serializer = NewPropertySerializer(data=request.data)
+        serializer = PropertySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
             json = serializer.data
             return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# payment post api
+# Payments per user endpoint
+
+
 class Payments(APIView):
     permission_classes = (IsAuthenticated,)
+
+    def get_property_payments(self, user_id):
+        try:
+            return Payment.objects.filter(user_id=user_id).all()
+        except Payment.DoesNotExist:
+            return Http404
+
+    def get(self, request, format='json'):
+        user = request.user
+        user_id = user.id
+        # get all user properties.
+
+        payments = self.get_property_payments(user_id)
+        serializers = NewPaymentSerializer(payments, many=True)
+        json = serializers.data
+        return Response(json)
 
     def post(self, request, format='json'):
         serializer = NewPaymentSerializer(data=request.data)
@@ -125,5 +135,6 @@ class Payments(APIView):
             return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PaymentView(CreateView):
-    form_class = PaymentForm
+
+# class PaymentView(CreateView):
+#     form_class = PaymentForm
