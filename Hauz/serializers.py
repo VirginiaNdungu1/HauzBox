@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from . models import Property_Group, Property, Property_Type, House, Amenity
+from . models import Property_Group, Property, Property_Type, House, Amenity, Payment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -78,15 +78,6 @@ class NewPropertySerializer(serializers.ModelSerializer):
     #     return single_property
 
 
-class PropertySerializer(serializers.ModelSerializer):
-    # property_expense = MonthlyExpenseSerializer(many=True)
-
-    class Meta:
-        model = Property
-        fields = ('name', 'description', 'house_count',
-                  'user', 'property_type')
-
-
 class PropertyGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Group
@@ -135,19 +126,33 @@ class ProprtyGroupsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Group
         fields = ('name', 'created_at', 'user', 'group_property')
+# Property Serializer
+
+
+class PropertySerializer(serializers.ModelSerializer):
+    # property_expense = MonthlyExpenseSerializer(many=True)
+
+    class Meta:
+        model = Property
+        fields = ('id', 'name', 'description', 'house_count',
+                  'property_type', 'gabbage', 'security', 'cleaning', 'property_tax', 'created_at')
+
 
 # serializer for payments
 
 
 class NewPaymentSerializer(serializers.ModelSerializer):
     # amenities = AmenitySerializer(many=True)
-    # property_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Property.objects.all())
+    # property_id = serializers.PrimaryKeyRelatedField(
+    #     many=True, queryset=Property.objects.all())
     # property_type = serializers.CharField(source=property_type.id)
+
+    # property_id = PropertySerializer()
 
     class Meta:
         model = Payment
-        fields = ('tenant_name', 'month', 'transaction_id',
-                  'amount', 'property_id')
+        fields = ('property_id', 'tenant_name', 'month', 'transaction_id',
+                  'amount')
 
     # def create(self, validated_data):
     #     amenity_data = validated_data.pop('amenities')
