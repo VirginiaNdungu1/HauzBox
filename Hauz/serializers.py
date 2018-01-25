@@ -38,7 +38,6 @@ class UserSerializer(serializers.ModelSerializer):
 #         fields = ('id', 'month', 'gabbage', 'security',
 #                   'cleaning', 'property_tax', 'maintenances')
 
-
 class PropertyTypeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property_Type
@@ -89,25 +88,25 @@ class HouseSerializer(serializers.ModelSerializer):
     # amenity_id = serializers.SlugRelatedField(many=True, read_only=True,
     #                                           slug_field='name')
     # tenants = TenantSerializer()
-    property_types = PropertyTypeListSerializer()
+    # property_types = PropertyTypeListSerializer()
     # tenant_id = serializers.SlugRelatedField(
     #     read_only=True, slug_field='name')
 
     class Meta:
         model = House
-        fields = ('property_types', 'house_no', 'description', 'bedrooms',
-                  'bathrooms', 'price', 'occupancy')
+        fields = ('house_property', 'house_no', 'description', 'bedrooms',
+                  'bathrooms', 'price', 'occupancy', 'property_types', 'tenant_name', 'original_id', 'account_no', 'phone_number', 'created_at', 'modified_at', 'user')
 
 
 class PropertiesSerializer(serializers.ModelSerializer):
     property_houses = HouseSerializer(many=True)
-    amenities = AmenitySerializer(many=True)
-    property_type = PropertyTypeListSerializer()
+    # amenities = AmenitySerializer(many=True)
+    # property_type = PropertyTypeListSerializer()
 
     class Meta:
         model = Property
-        fields = ('name', 'description', 'house_count',
-                  'user', 'property_type', 'amenities', 'property_houses', )
+        fields = ('id', 'name', 'description', 'house_count',
+                  'property_type', 'gabbage', 'security', 'cleaning', 'property_tax', 'property_houses')
 
 
 class PropertyTypeSerializer(serializers.ModelSerializer):
@@ -136,6 +135,15 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = ('id', 'name', 'description', 'house_count',
                   'property_type', 'gabbage', 'security', 'cleaning', 'property_tax', 'created_at')
+
+# serializer for new house
+
+
+class NewHouseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = House
+        fields = ('house_property', 'house_no', 'description', 'bedrooms',
+                  'bathrooms', 'price', 'occupancy', 'property_types', 'tenant_name', 'original_id', 'account_no', 'phone_number', 'created_at', 'modified_at', 'user')
 
 
 # serializer for payments
