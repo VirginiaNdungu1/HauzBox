@@ -87,7 +87,10 @@ class Property(models.Model):
 class House(models.Model):
     class Meta:
         db_table = 'houses'
-
+    house_property = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_houses', null=True)
+    property_types = models.ForeignKey(
+        Property_Type, on_delete=models.CASCADE, related_name='house_id')
     house_no = models.CharField(max_length=30)
     description = models.TextField(max_length=250)
     bedrooms = models.PositiveIntegerField(default=0)
@@ -102,10 +105,7 @@ class House(models.Model):
     phone_number = PhoneNumberField(blank=True, null=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='property_tenant', null=True)
-    property_types = models.ForeignKey(
-        Property_Type, on_delete=models.CASCADE, related_name='house_id')
-    house_property = models.ForeignKey(
-        Property, on_delete=models.CASCADE, related_name='property_houses', null=True)
+
     # tenants = models.ForeignKey(
     #     Tenant, on_delete=models.CASCADE, related_name='house_tenant', blank=True, null=True)
 
@@ -146,7 +146,8 @@ class Payment(models.Model):
     # month = models.CharField(max_length=30, choices=Month_Choices, default='jan', blank=True)
     # paid_at = models.TimeField(
     #     auto_now=False, auto_now_add=False, null=True)
-    amount = models.DecimalField(max_digits=14, decimal_places=2, null=True)
+    amount = models.DecimalField(
+        max_digits=14, decimal_places=2, null=True)
     # is_paid = models. BooleanField(default=False)
 
     def __str__(self):
