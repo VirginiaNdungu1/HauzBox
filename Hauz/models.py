@@ -95,7 +95,7 @@ class House(models.Model):
     price = models.DecimalField(max_digits=14, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     occupancy = models.BooleanField(default=False)
-    name = models.CharField(max_length=50, null=True)
+    tenant_name = models.CharField(max_length=50, null=True)
     original_id = models.PositiveIntegerField(null=True)
     account_no = models.CharField(max_length=30, null=True)
     modified_at = models.DateTimeField(auto_now_add=True, null=True)
