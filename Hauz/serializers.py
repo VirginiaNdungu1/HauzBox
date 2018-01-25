@@ -154,6 +154,14 @@ class NewPaymentSerializer(serializers.ModelSerializer):
         fields = ('property_id', 'tenant_name', 'month', 'transaction_id',
                   'amount', 'user')
 
+
+class PaymentSerializer(serializers.ModelSerializer):
+    property_id = PropertySerializer()
+
+    class Meta:
+        model = Payment
+        fields = ('property_id', 'tenant_name', 'month', 'transaction_id',
+                  'amount', 'user')
     # def create(self, validated_data):
     #     amenity_data = validated_data.pop('amenities')
     #     single_property = Property.objects.create(**validated_data)

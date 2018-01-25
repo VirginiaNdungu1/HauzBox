@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer
+from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer, PaymentSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
@@ -123,7 +123,7 @@ class Payments(APIView):
         # get all user properties.
 
         payments = self.get_property_payments(user_id)
-        serializers = NewPaymentSerializer(payments, many=True)
+        serializers = PaymentSerializer(payments, many=True)
         json = serializers.data
         return Response(json)
 
@@ -134,7 +134,3 @@ class Payments(APIView):
             json = serializer.data
             return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# class PaymentView(CreateView):
-#     form_class = PaymentForm
