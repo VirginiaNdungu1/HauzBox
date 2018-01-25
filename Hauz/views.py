@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer, PaymentSerializer
+from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer, PaymentSerializer, NewHouseSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
@@ -134,3 +134,29 @@ class Payments(APIView):
             json = serializer.data
             return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PropertyHouses(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get_user_properties(self, user_id):
+        try:
+            return Property.objects.filter(user_id=user_id).all()
+        except Property.DoesNotExist:
+            return Http404
+
+    def post(self, request, format='json'):
+        serializer = NewHouseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            json = serializer.data
+            return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format='json'):
+        user = request.user
+        user_id = user.id
+        properties = self.get_user_properties(user_id)
+        serializers = PropertiesSerializer(properties, many=True)
+        json = serializers.data
+        return Response(json, status=status.HTTP_200_OK)
