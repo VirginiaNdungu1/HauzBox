@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . serializers import UserSerializer, ProprtyGroupsSerializer, PropertiesSerializer, PropertyTypeSerializer, PropertyGroupSerializer, PropertySerializer, NewPropertySerializer, NewPaymentSerializer, PaymentSerializer, NewHouseSerializer
@@ -8,7 +9,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
-from . models import Property_Group, Property, Property_Type, Payment
+from . models import Property_Group, Property, Property_Type, Payment, House
 from rest_framework.permissions import IsAuthenticated, AllowAny
 # Create your views here.
 from django.views.generic.edit import CreateView
@@ -65,17 +66,17 @@ class PropertyGroupList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PropertyTypeList(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get_property_types(self):
-        return Property_Type.objects.all()
-
-    def get(self, request, format='json'):
-        property_types = self.get_property_types()
-        serializer = PropertyTypeSerializer(property_types, many=True)
-        json = serializer.data
-        return Response(json)
+# class PropertyTypeList(APIView):
+#     permission_classes = (IsAuthenticated,)
+#
+#     def get_property_types(self):
+#         return Property_Type.objects.all()
+#
+#     def get(self, request, format='json'):
+#         property_types = self.get_property_types()
+#         serializer = PropertyTypeSerializer(property_types, many=True)
+#         json = serializer.data
+#         return Response(json)
 
 # properties per user
 
@@ -160,3 +161,29 @@ class PropertyHouses(APIView):
         serializers = PropertiesSerializer(properties, many=True)
         json = serializers.data
         return Response(json, status=status.HTTP_200_OK)
+
+
+class PropertyTypes(APIView):
+    permission_classes = (IsAuthenticated, AllowAny, )
+
+    def get_all_property_types(self):
+        try:
+            return Property_Type.objects.all()
+        except Property_Type.DoesNotExist:
+            return Http404
+
+    def get(self, request, format='json'):
+        property_types = self.get_all_property_types()
+        serializers = PropertyTypeSerializer(property_types, many=True)
+        json = serializers.data
+        return Response(json, status=status.HTTP_200_OK)
+
+
+class HouseViewSet(viewsets.ModelViewSet):
+    queryset = House.objects.all()
+    serializer_class = NewHouseSerializer
+
+
+class PropertyTypeViewSet(viewsets.ModelViewSet):
+    queryset = Property_Type.objects.all()
+    serializer_class = PropertyGroupSerializer
