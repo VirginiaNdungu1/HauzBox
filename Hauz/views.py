@@ -179,6 +179,17 @@ class PropertyTypes(APIView):
         return Response(json, status=status.HTTP_200_OK)
 
 
+class PropertyHousesView(APIView):
+    def get_property_houses(self, pk):
+        return Property.objects.get(pk=pk)
+
+    def get(self, request, pk, format='json'):
+        properties = self.get_property_houses(pk=pk)
+        serializers = PropertiesSerializer(properties)
+        json = serializers.data
+        return Response(json, status=status.HTTP_200_OK)
+
+
 class HouseViewSet(viewsets.ModelViewSet):
     queryset = House.objects.all()
     serializer_class = NewHouseSerializer
