@@ -190,6 +190,17 @@ class PropertyHousesView(APIView):
         return Response(json, status=status.HTTP_200_OK)
 
 
+class PropertyPayments(APIView):
+    def get_property_payments(self, property_id_id):
+        return Payment.objects.filter(property_id_id=property_id_id)
+
+    def get(self, request, property_id_id, format='json'):
+        payments = self.get_property_payments(property_id_id=property_id_id)
+        serializers = PaymentSerializer(payments, many=True)
+        json = serializers.data
+        return Response(json, status=status.HTTP_200_OK)
+
+
 class HouseViewSet(viewsets.ModelViewSet):
     queryset = House.objects.all()
     serializer_class = NewHouseSerializer
