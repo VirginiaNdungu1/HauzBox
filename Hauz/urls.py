@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^api/payment/new/$', views.Payments.as_view()),
     url(r'^api/property/(?P<pk>[0-9]+)/$',
         views.PropertyHousesView.as_view()),
+    url(r'^api/property/payments/(?P<property_id_id>[0-9]+)/$',
+        views.PropertyPayments.as_view()),
     # url(r'^api/property_group/properties/(?P<property_group_id>[0-9]+)/$',
     #     views.PropertiesList.as_view()),
 ]
