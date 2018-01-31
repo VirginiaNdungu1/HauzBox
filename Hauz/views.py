@@ -200,6 +200,108 @@ class PropertyPayments(APIView):
         json = serializers.data
         return Response(json, status=status.HTTP_200_OK)
 
+    #  def put(self, request, pk, format=json):
+    #     merch = self.get_merch(pk)
+    #     serializers = MerchSerializer(merch, request.data)
+    #     if serializers.is_valid():
+    #         serializers.save()
+    #         return Response(serializers.data)
+    #     else:
+    #         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PropertyDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_property(self, pk):
+        try:
+            return Property.objects.get(pk=pk)
+        except Property.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format='json'):
+        single_property = self.get_property(pk=pk)
+        serializers = PropertySerializer(single_property)
+        return Response(serializers.data)
+
+    def put(self, request, pk, format='json'):
+        single_property = self.get_property(pk=pk)
+        serializers = PropertySerializer(single_property, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format='json'):
+        single_property = self.get_property(pk=pk)
+        if single_property:
+            single_property.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class HouseDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_house(self, pk):
+        try:
+            return House.objects.get(pk=pk)
+        except House.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format='json'):
+        house = self.get_house(pk=pk)
+        serializers = NewHouseSerializer(house)
+        return Response(serializers.data)
+
+    def put(self, request, pk, format='json'):
+        house = self.get_property(pk=pk)
+        serializers = NewHouseSerializer(house, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format='json'):
+        house = self.get_property(pk=pk)
+        if house:
+            house.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PaymentDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_payment(self, pk):
+        try:
+            return Payment.objects.get(pk=pk)
+        except Payment.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format='json'):
+        payment = self.get_payment(pk=pk)
+        serializers = NewPaymentSerializer(payment)
+        return Response(serializers.data)
+
+    def put(self, request, pk, format='json'):
+        payment = self.get_payment(pk=pk)
+        serializers = NewPaymentSerializer(payment, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format='json'):
+        payment = self.get_payment(pk=pk)
+        payment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class HouseViewSet(viewsets.ModelViewSet):
     queryset = House.objects.all()
