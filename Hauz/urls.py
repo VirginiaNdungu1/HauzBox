@@ -21,6 +21,12 @@ urlpatterns = [
         views.PropertyHousesView.as_view()),
     url(r'^api/property/payments/(?P<property_id_id>[0-9]+)/$',
         views.PropertyPayments.as_view()),
+    url(r'^api/payment/(?P<pk>[0-9]+)/$',
+        views.PaymentDetails.as_view()),
+    url(r'^api/single_property/(?P<pk>[0-9]+)/$',
+        views.PropertyDetails.as_view()),
+    url(r'^api/house/(?P<pk>[0-9]+)/$',
+        views.HouseDetails.as_view()),
     # url(r'^api/property_group/properties/(?P<property_group_id>[0-9]+)/$',
     #     views.PropertiesList.as_view()),
 ]
