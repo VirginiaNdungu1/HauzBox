@@ -59,11 +59,11 @@ class Property(models.Model):
     class Meta:
         db_table = 'property'
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=250, blank=True)
     house_count = models.PositiveIntegerField(default=0)
     property_type = models.ForeignKey(
-        Property_Type, on_delete=models.CASCADE, related_name='all_property_types')
+        Property_Type, on_delete=models.CASCADE, related_name='all_property_types', null=True)
     property_group = models.ForeignKey(
         Property_Group, on_delete=models.CASCADE, related_name='group_property', null=True)
     # created_at = models.DateTimeField(auto_now_add=True)
@@ -79,9 +79,33 @@ class Property(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_property')
     amenities = models.ManyToManyField(Amenity)
+    # payments = models.ManyToManyField(Payment)
 
     def __str__(self):
         return self.name
+
+
+class Payment(models.Model):
+    class Meta:
+        db_table = 'payment'
+    property_id = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_payment', null=True)
+    tenant_name = models.CharField(max_length=100, null=True)
+    month = models.CharField(max_length=100, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='house_payment', null=True)
+
+    # house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='house_payment')
+    transaction_id = models.CharField(max_length=50, null=True)
+    # month = models.CharField(max_length=30, choices=Month_Choices, default='jan', blank=True)
+    # paid_at = models.TimeField(
+    #     auto_now=False, auto_now_add=False, null=True)
+    amount = models.DecimalField(
+        max_digits=14, decimal_places=2, null=True)
+    # is_paid = models. BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.property_id)
 
 
 class House(models.Model):
@@ -129,29 +153,6 @@ class House(models.Model):
 #
 #     def __str__(self):
 #         return self.name
-
-
-class Payment(models.Model):
-    class Meta:
-        db_table = 'payment'
-    property_id = models.ForeignKey(
-        Property, on_delete=models.CASCADE, related_name='property_payment', null=True)
-    tenant_name = models.CharField(max_length=100, null=True)
-    month = models.CharField(max_length=100, null=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='house_payment', null=True)
-
-    # house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='house_payment')
-    transaction_id = models.CharField(max_length=50, null=True)
-    # month = models.CharField(max_length=30, choices=Month_Choices, default='jan', blank=True)
-    # paid_at = models.TimeField(
-    #     auto_now=False, auto_now_add=False, null=True)
-    amount = models.DecimalField(
-        max_digits=14, decimal_places=2, null=True)
-    # is_paid = models. BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.property_id)
 
 
 # class Maintenance(models.Model):
