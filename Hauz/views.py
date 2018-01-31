@@ -301,13 +301,3 @@ class PaymentDetails(APIView):
         payment = self.get_payment(pk=pk)
         payment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class HouseViewSet(viewsets.ModelViewSet):
-    queryset = House.objects.all()
-    serializer_class = NewHouseSerializer
-
-
-class PropertyTypeViewSet(viewsets.ModelViewSet):
-    queryset = Property_Type.objects.all()
-    serializer_class = PropertyGroupSerializer
